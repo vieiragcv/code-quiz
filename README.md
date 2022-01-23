@@ -15,3 +15,15 @@ WHEN all questions are answered or the timer reaches 0
 THEN the game is over
 WHEN the game is over
 THEN I can save my initials and score
+
+
+Questions Format:
+
+Title: "Question here"
+
+Option 1: "answer 1"
+Option 2: "answer 2"
+Option 3: "answer 3"
+Option 4: "answer 4"
+
+Correct Answer = Option X
