@@ -5,22 +5,25 @@
 var  q1 = 'Commonly used datatypes DO NOT include:';
 var q1opts = ['String','Booleans', 'Alerts', 'Numbers'];
 
-var q2 = 'Question Number 2 Prompted';
-var q2opts = ['Q2 A1', 'Q2 A2', 'Q2 A3', 'Q2 A4'];
+var q2 = 'The condition in and if / else statement is enclosed with ___';
+var q2opts = ['quotes', 'curly brackets', 'parenthesis', 'square brackets'];
 
-var q3 = 'Question Number 3 Prompted';
-var q3opts = ['Q3 A1', 'Q3 A2', 'Q3 A3', 'Q3 A4'];
+var q3 = 'Arrays in JavaScript can be used to store ___.';
+var q3opts = ['numbers and strings', 'other arrays', 'booleans', 'all of the above'];
 
-var q4 = 'Question Number 4 Prompted';
-var q4opts = ['Q4 A1', 'Q4 A2', 'Q4 A3', 'Q4 A4'];
+var q4 = 'A very useful tool used during development and debugging for printing content to the debugger is:';
+var q4opts = ['JavaScript', 'terminal/bash', 'for loops', 'console.log'];
 
-var correctAnswers = ['btn-0','btn-3','btn-2','btn-1']
+var q5 = 'String values must be enclosed within ___ when being assigned to variables.';
+var q5opts = ['commas', 'curly brackets', 'quotes', 'parenthesis'];
+
+var correctAnswers = ['btn-0','btn-2','btn-3','btn-3','btn-2'];
 
 var correctCount = 0;
 var questionCount = 1;
 
-var questionArr = [q1, q2, q3, q4];
-var optionsArr = [q1opts, q2opts, q3opts, q4opts];
+var questionArr = [q1, q2, q3, q4, q5];
+var optionsArr = [q1opts, q2opts, q3opts, q4opts, q5opts];
 
 var mainContainer = document.querySelector("#main-container");
 var footerContainer = document.querySelector("#footer");
@@ -31,7 +34,10 @@ var footerContainer = document.querySelector("#footer");
 
 var checkAnswer = function (event) {          // Working only for first question
   var targetEl = event.target;
-  if (targetEl.id === correctAnswers[0]) {
+  var parentQuestion = document.querySelector('[id^="q-"]').id;
+  var numOnly = parentQuestion.replace( /^\D+/g, '');
+
+  if (targetEl.id === correctAnswers[numOnly]) {
     var footerEl = createResultFooter('Correct!');  
     footerContainer.appendChild(footerEl);
     correctCount++;
@@ -40,7 +46,7 @@ var checkAnswer = function (event) {          // Working only for first question
     var footerEl = createResultFooter('Wrong');
     footerContainer.appendChild(footerEl);
   }
-  footerEl.addEventListener('click',nextQuestion); // TEMPORARY - need to click on footer to load next question. should be a timed event (2 second delay)
+  setTimeout(nextQuestion, 1500);
 }
 
 /*----------------------------------------------------------------------
@@ -59,13 +65,19 @@ var createButton = function (value) {
 }
 
 var nextQuestion = function () {
-  var clearQuestion = document.getElementById("main-container");
-  clearQuestion.innerHTML = '';
-  var clearFooter = document.getElementById("footer");
-  clearFooter.innerHTML = '';
-  promptQuestion(questionCount);
-  questionCount++;
-  return;
+  if(questionCount < 5) {
+    var clearQuestion = document.getElementById("main-container");
+    clearQuestion.innerHTML = '';
+    var clearFooter = document.getElementById("footer");
+    clearFooter.innerHTML = '';
+    promptQuestion(questionCount);
+    questionCount++;
+    return;
+  }
+  else {
+    var userScore = (correctCount / 5) * 100;
+    window.alert('Your Score is:' + userScore); //This needs to point to the results screens
+  }
 };
 
 var createResultFooter = function (value) {
@@ -74,7 +86,7 @@ var createResultFooter = function (value) {
   footerEl.innerHTML = "<h3>" + value + "</h3>";
   return footerEl;
 }
-// creates a <div> <h3> QuestionArr['i'] </h3> </div>
+
 
 /*------------------------------------------------------------------------
 -                         MAIN FUNCTION
@@ -84,6 +96,7 @@ var promptQuestion = function (value) {
 
   var qEl = document.createElement("div");
   qEl.className = "row";
+  qEl.id = 'q-' + value;
   qEl.innerHTML = '<h3>' + questionArr[value] + '</h3>';          // <h3> Question Text </h3>
   mainContainer.appendChild(qEl);                           // <div><h3></h3></div>
   
@@ -112,3 +125,4 @@ var promptQuestion = function (value) {
 }
 
 promptQuestion(0);
+
