@@ -46,7 +46,7 @@ var checkAnswer = function (event) {          // Working only for first question
     var footerEl = createResultFooter('Wrong');
     footerContainer.appendChild(footerEl);
   }
-  setTimeout(nextQuestion, 1500);
+  setTimeout(nextQuestion, 1000);
 }
 
 /*----------------------------------------------------------------------
@@ -76,7 +76,12 @@ var nextQuestion = function () {
   }
   else {
     var userScore = (correctCount / 5) * 100;
-    window.alert('Your Score is:' + userScore); //This needs to point to the results screens
+    var clearQuestion = document.getElementById("main-container");
+    clearQuestion.innerHTML = '';
+    var clearFooter = document.getElementById("footer");
+    clearFooter.innerHTML = '';
+    promptResult(userScore);
+    //window.alert('Your Score is:' + userScore); //This needs to point to the results screens
   }
 };
 
@@ -124,5 +129,32 @@ var promptQuestion = function (value) {
 
 }
 
+var promptResult = function (value) {
+
+  var qEl = document.createElement("div");
+  qEl.className = "row";
+  qEl.id = "enter-initials";
+  qEl.innerHTML = '<h3>All done!</h3> <p>Your final score is: ' + value + '</p>';
+  mainContainer.appendChild(qEl);
+
+  var formEl = document.createElement("form");
+  var labelEl = document.createElement("label");
+  labelEl.for = 'user-initials';
+  labelEl.textContent = 'Enter Your Initials:   '
+  var inputEl = document.createElement("input");
+  inputEl.type = 'text';
+  inputEl.id = 'user-initials'; 
+
+  var qButton = document.createElement("button");
+  qButton.className = "btn btn-primary btn-sm";
+  qButton.type = "button";
+  qButton.textContent = "Submit High Score";
+
+  formEl.appendChild(labelEl);
+  formEl.appendChild(inputEl);
+  formEl.appendChild(qButton);
+  mainContainer.appendChild(formEl);
+
+}
 promptQuestion(0);
 
