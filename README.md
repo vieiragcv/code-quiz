@@ -27,3 +27,25 @@ Option 3: "answer 3"
 Option 4: "answer 4"
 
 Correct Answer = Option X
+
+as of 01/23/2022
+
+Pending Developments:
+
+- Fix bug where counter is not showing on top right corner
+
+- Finalize styling on all divs
+
+- locally store user name with the score
+
+- create "promptHighScore" function. creates divs and listed items from local storage
+
+- create alert when timer reaches zero
+
+- block option to click on butons after a selection is made
+
+- number selections
+
+extras:
+
+- create function to randomize answer options positions.
