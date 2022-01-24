@@ -90,7 +90,6 @@ var nextQuestion = function () {
     var clearFooter = document.getElementById("footer");
     clearFooter.innerHTML = '';
     submitHighScore();
-    console.log(userScore);
     promptResult(userScore);
   }
 };
@@ -177,6 +176,7 @@ var promptStart = function () {
 
   var startQuiz = document.querySelector("#startBtn");
   startQuiz.addEventListener('click', nextQuestion);
+  startQuiz.addEventListener('click', startCountDown);
 }
 
 promptStart();
@@ -185,28 +185,30 @@ promptStart();
 /*------------------------------------------------------------------------
 -                        TIMER - FUNCTIONS
 -------------------------------------------------------------------------*/
-var currentTime;
+var currentTime = 100;
 var timeLeft = document.querySelector('#time-left');
 var TimerEl = document.createElement("button");
-TimerEl.type = "buton";
+TimerEl.type = "button";
 TimerEl.className = "btn btn-link";
 TimerEl.innerHTML = currentTime;
 timeLeft.appendChild(TimerEl);
+console.log(TimerEl);
 
 function countDown() {
-  currentTime--;
-  currentTime.textContent = currentTime;
-    if(currentTime === 0) {
-      clearInterval(timerId);
-      alert('You are out of time!');
-    }
+  
+    currentTime--;
+    TimerEl.innerHTML = currentTime;
+    timeLeft.appendChild(TimerEl);
+    console.log(currentTime);
+    // alert('You are out of time!');  
+
 }
 
-var timerId = setInterval(countDown, 10000);
-var startQuiz = document.querySelector("#startBtn");
-document.addEventListener('click', countDown);
+function startCountDown() {
+  
+  setInterval(countDown, 1000);
+}
 
-countDown(1000);
 
 
 /*------------------------------------------------------------------------
@@ -214,7 +216,5 @@ countDown(1000);
 -------------------------------------------------------------------------*/
 
 var submitHighScore = function() {
-  console.log(userScore);
-  
   localStorage.setItem("Score", JSON.stringify(userScore));
 }
