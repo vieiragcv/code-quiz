@@ -90,6 +90,7 @@ var nextQuestion = function () {
     var clearFooter = document.getElementById("footer");
     clearFooter.innerHTML = '';
     submitHighScore();
+    console.log(userScore);
     promptResult(userScore);
   }
 };
@@ -156,6 +157,8 @@ var promptResult = function (value) {
   formEl.appendChild(qButton);
   mainContainer.appendChild(formEl);
 
+  
+
 }
 
 var promptStart = function () {
@@ -212,5 +215,6 @@ countDown(1000);
 
 var submitHighScore = function() {
   console.log(userScore);
+  
   localStorage.setItem("Score", JSON.stringify(userScore));
 }
