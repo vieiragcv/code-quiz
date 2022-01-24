@@ -20,7 +20,9 @@ var q5opts = ['commas', 'curly brackets', 'quotes', 'parenthesis'];
 var correctAnswers = ['btn-0','btn-2','btn-3','btn-3','btn-2'];
 
 var correctCount = 0;
-var questionCount = 1;
+var questionCount = 0;
+
+var userScore = 0;
 
 var questionArr = [q1, q2, q3, q4, q5];
 var optionsArr = [q1opts, q2opts, q3opts, q4opts, q5opts];
@@ -32,7 +34,7 @@ var footerContainer = document.querySelector("#footer");
 -                       ANSWER VALIDATION
 ----------------------------------------------------------------------*/
 
-var checkAnswer = function (event) {          // Working only for first question
+var checkAnswer = function (event) {   
   var targetEl = event.target;
   var parentQuestion = document.querySelector('[id^="q-"]').id;
   var numOnly = parentQuestion.replace( /^\D+/g, '');
@@ -47,6 +49,13 @@ var checkAnswer = function (event) {          // Working only for first question
     footerContainer.appendChild(footerEl);
   }
   setTimeout(nextQuestion, 1000);
+}
+
+var createResultFooter = function (value) {
+  var footerEl = document.createElement("div");
+  footerEl.className = "row";
+  footerEl.innerHTML = "<h3>" + value + "</h3>";
+  return footerEl;
 }
 
 /*----------------------------------------------------------------------
@@ -75,26 +84,18 @@ var nextQuestion = function () {
     return;
   }
   else {
-    var userScore = (correctCount / 5) * 100;
+    userScore = (correctCount / 5) * 100;
     var clearQuestion = document.getElementById("main-container");
     clearQuestion.innerHTML = '';
     var clearFooter = document.getElementById("footer");
     clearFooter.innerHTML = '';
+    submitHighScore();
     promptResult(userScore);
-    //window.alert('Your Score is:' + userScore); //This needs to point to the results screens
   }
 };
 
-var createResultFooter = function (value) {
-  var footerEl = document.createElement("div");
-  footerEl.className = "row";
-  footerEl.innerHTML = "<h3>" + value + "</h3>";
-  return footerEl;
-}
-
-
 /*------------------------------------------------------------------------
--                         MAIN FUNCTION
+-                        PROMPT TO SCREEN - FUNCTIONS
 -------------------------------------------------------------------------*/
 
 var promptQuestion = function (value) {
@@ -156,5 +157,60 @@ var promptResult = function (value) {
   mainContainer.appendChild(formEl);
 
 }
-promptQuestion(0);
 
+var promptStart = function () {
+  var qEl = document.createElement("div");
+  qEl.className = "row";
+  qEl.id = 'start-page';
+  qEl.innerHTML = '<h2> Coding Quiz Challenge </h2> <p> Try to answer the following code-related questions within the time limit. Keep in mind that incorrect anwswers will penalize your score/time by ten seconds! </p>';
+  var qButton = document.createElement("button");
+  qButton.className = "btn btn-primary btn-sm";
+  qButton.type = "button";
+  qButton.id = "startBtn";
+  qButton.textContent = 'Start Quiz';
+  
+  qEl.appendChild(qButton);
+  mainContainer.appendChild(qEl);
+
+  var startQuiz = document.querySelector("#startBtn");
+  startQuiz.addEventListener('click', nextQuestion);
+}
+
+promptStart();
+
+
+/*------------------------------------------------------------------------
+-                        TIMER - FUNCTIONS
+-------------------------------------------------------------------------*/
+var currentTime;
+var timeLeft = document.querySelector('#time-left');
+var TimerEl = document.createElement("button");
+TimerEl.type = "buton";
+TimerEl.className = "btn btn-link";
+TimerEl.innerHTML = currentTime;
+timeLeft.appendChild(TimerEl);
+
+function countDown() {
+  currentTime--;
+  currentTime.textContent = currentTime;
+    if(currentTime === 0) {
+      clearInterval(timerId);
+      alert('You are out of time!');
+    }
+}
+
+var timerId = setInterval(countDown, 10000);
+var startQuiz = document.querySelector("#startBtn");
+document.addEventListener('click', countDown);
+
+countDown(1000);
+
+
+/*------------------------------------------------------------------------
+-                        HIGH SCORE STORAGE
+-------------------------------------------------------------------------*/
+
+var submitHighScore = function() {
+  console.log(userScore);
+  localStorage.setItem("Score", JSON.stringify(userScore));
+}
