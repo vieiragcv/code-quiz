@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------
 -                   GLOBAL VARIABLES                           
--------------------------------------------------------------*/
+--------------------------------------------------------------*/
 
 var  q1 = 'Commonly used datatypes DO NOT include:';
 var q1opts = ['String','Booleans', 'Alerts', 'Numbers'];
@@ -30,6 +30,46 @@ var optionsArr = [q1opts, q2opts, q3opts, q4opts, q5opts];
 var mainContainer = document.querySelector("#main-container");
 var footerContainer = document.querySelector("#footer");
 
+/*------------------------------------------------------------------------
+-                                   TIMER
+-------------------------------------------------------------------------*/
+
+var currentTime = 100;
+var timeLeft = document.querySelector('#time-left');
+var TimerEl = document.createElement("div");
+
+TimerEl.type = "div";
+TimerEl.id = 'timer';
+TimerEl.className = "btn btn-link";
+TimerEl.innerHTML = currentTime;
+
+if (currentTime > 0) {
+  timeLeft.appendChild(TimerEl);
+}
+else {
+  stopCountDown();
+}
+
+function countDown() {
+  
+    currentTime--;
+    TimerEl.innerHTML = currentTime;
+    timeLeft.appendChild(TimerEl);
+    if (currentTime === 0 ) {
+      nextQuestion();
+      alert('You are out of time!');  
+      stopCountDown();
+    }
+}
+
+function startCountDown() {
+  intervalID = setInterval(countDown, 1000);
+}
+
+function stopCountDown() {
+  clearInterval(intervalID);
+}
+
 /*----------------------------------------------------------------------
 -                       ANSWER VALIDATION
 ----------------------------------------------------------------------*/
@@ -45,7 +85,8 @@ var checkAnswer = function (event) {
     correctCount++;
   }
   else {  
-    var footerEl = createResultFooter('Wrong');
+    var footerEl = createResultFooter('Wrong - 10 Seconds deducted');
+    currentTime = currentTime - 10;
     footerContainer.appendChild(footerEl);
   }
   setTimeout(nextQuestion, 1000);
@@ -74,11 +115,14 @@ var createButton = function (value) {
 }
 
 var nextQuestion = function () {
-  if(questionCount < 5) {
+  if(questionCount < 5 && currentTime > 0) {
+
     var clearQuestion = document.getElementById("main-container");
     clearQuestion.innerHTML = '';
+
     var clearFooter = document.getElementById("footer");
     clearFooter.innerHTML = '';
+    
     promptQuestion(questionCount);
     questionCount++;
     return;
@@ -89,7 +133,6 @@ var nextQuestion = function () {
     clearQuestion.innerHTML = '';
     var clearFooter = document.getElementById("footer");
     clearFooter.innerHTML = '';
-    submitHighScore();
     promptResult(userScore);
   }
 };
@@ -139,32 +182,44 @@ var promptResult = function (value) {
   mainContainer.appendChild(qEl);
 
   var formEl = document.createElement("form");
+  formEl.id = 'submit-scoreboard'
+
   var labelEl = document.createElement("label");
   labelEl.for = 'user-initials';
-  labelEl.textContent = 'Enter Your Initials:   '
+  labelEl.textContent = 'Enter Your Initials:   ';
+
+  formEl.appendChild(labelEl);
+
   var inputEl = document.createElement("input");
   inputEl.type = 'text';
-  inputEl.id = 'user-initials'; 
+  inputEl.id = 'user-initials';
+  inputEl.placeholder = 'Input your initials: '
+
+  formEl.appendChild(inputEl);
 
   var qButton = document.createElement("button");
   qButton.className = "btn btn-primary btn-sm";
-  qButton.type = "button";
+  qButton.type = "submit";
   qButton.textContent = "Submit High Score";
+  qButton.id = 'high-score-submit';
 
-  formEl.appendChild(labelEl);
-  formEl.appendChild(inputEl);
   formEl.appendChild(qButton);
+
   mainContainer.appendChild(formEl);
 
-  
+  console.log(inputEl.value);
 
-}
+  qButton.addEventListener('click', submitHighScore);
+  
+ }
 
 var promptStart = function () {
+
   var qEl = document.createElement("div");
   qEl.className = "row";
   qEl.id = 'start-page';
   qEl.innerHTML = '<h2> Coding Quiz Challenge </h2> <p> Try to answer the following code-related questions within the time limit. Keep in mind that incorrect anwswers will penalize your score/time by ten seconds! </p>';
+
   var qButton = document.createElement("button");
   qButton.className = "btn btn-primary btn-sm";
   qButton.type = "button";
@@ -177,44 +232,25 @@ var promptStart = function () {
   var startQuiz = document.querySelector("#startBtn");
   startQuiz.addEventListener('click', nextQuestion);
   startQuiz.addEventListener('click', startCountDown);
-}
-
-promptStart();
-
-
-/*------------------------------------------------------------------------
--                        TIMER - FUNCTIONS
--------------------------------------------------------------------------*/
-var currentTime = 100;
-var timeLeft = document.querySelector('#time-left');
-var TimerEl = document.createElement("button");
-TimerEl.type = "button";
-TimerEl.className = "btn btn-link";
-TimerEl.innerHTML = currentTime;
-timeLeft.appendChild(TimerEl);
-console.log(TimerEl);
-
-function countDown() {
-  
-    currentTime--;
-    TimerEl.innerHTML = currentTime;
-    timeLeft.appendChild(TimerEl);
-    console.log(currentTime);
-    // alert('You are out of time!');  
 
 }
-
-function startCountDown() {
-  
-  setInterval(countDown, 1000);
-}
-
-
 
 /*------------------------------------------------------------------------
 -                        HIGH SCORE STORAGE
 -------------------------------------------------------------------------*/
 
-var submitHighScore = function() {
-  localStorage.setItem("Score", JSON.stringify(userScore));
+var submitHighScore = function(user) {
+  const input = document.querySelector('#user-initials');
+  user = input.value;
+  console.log(user);
+  localStorage.setItem(`${user}`, JSON.stringify(userScore));
 }
+
+promptStart();
+
+
+
+
+
+
+
