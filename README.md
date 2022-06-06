@@ -50,11 +50,10 @@ Pending Developments:
 
 - stop quiz when timer reaches 0 and alert user - COMPLETE!
 
-- locally store user name with the score - PENDING!
+- locally store user name with the score - COMPLETE!
 
 - Finalize styling on all divs  - PENDING!
 
 - create "promptHighScore" function. creates divs and listed items from local storage  - PENDING!
 
 - block option to click on butons after a selection is made  - PENDING!
-.

@@ -40,7 +40,7 @@ var TimerEl = document.createElement("div");
 
 TimerEl.type = "div";
 TimerEl.id = 'timer';
-TimerEl.className = "btn btn-link";
+TimerEl.className = 'correct-answer';
 TimerEl.innerHTML = currentTime;
 
 if (currentTime > 0) {
@@ -54,6 +54,7 @@ function countDown() {
   
     currentTime--;
     TimerEl.innerHTML = currentTime;
+    TimerEl.className = 'wrong-answer';
     timeLeft.appendChild(TimerEl);
     if (currentTime === 0 ) {
       nextQuestion();
@@ -80,12 +81,14 @@ var checkAnswer = function (event) {
   var numOnly = parentQuestion.replace( /^\D+/g, '');
 
   if (targetEl.id === correctAnswers[numOnly]) {
-    var footerEl = createResultFooter('Correct!');  
+    var footerEl = createResultFooter('Correct!');
+    footerEl.className = 'correct-answer'; 
     footerContainer.appendChild(footerEl);
     correctCount++;
   }
   else {  
     var footerEl = createResultFooter('Wrong - 10 Seconds deducted');
+    footerEl.className = 'wrong-answer'; 
     currentTime = currentTime - 10;
     footerContainer.appendChild(footerEl);
   }
@@ -144,7 +147,7 @@ var nextQuestion = function () {
 var promptQuestion = function (value) {
 
   var qEl = document.createElement("div");
-  qEl.className = "row";
+  qEl.className = "row m-3 p-3";
   qEl.id = 'q-' + value;
   qEl.innerHTML = '<h3>' + questionArr[value] + '</h3>';          // <h3> Question Text </h3>
   mainContainer.appendChild(qEl);                           // <div><h3></h3></div>
@@ -178,22 +181,25 @@ var promptResult = function (value) {
   var qEl = document.createElement("div");
   qEl.className = "row";
   qEl.id = "enter-initials";
-  qEl.innerHTML = '<h3>All done!</h3> <p>Your final score is: ' + value + '</p>';
+  qEl.innerHTML = '<h3>Nicely Done!</h3> <h3>Your Scored:  ' + value + '</h3>';
   mainContainer.appendChild(qEl);
 
   var formEl = document.createElement("form");
-  formEl.id = 'submit-scoreboard'
+  formEl.className = '';
+  formEl.id = 'submit-scoreboard';
 
   var labelEl = document.createElement("label");
   labelEl.for = 'user-initials';
   labelEl.textContent = 'Enter Your Initials:   ';
+  labelEl.className = 'form-label';
 
   formEl.appendChild(labelEl);
 
   var inputEl = document.createElement("input");
   inputEl.type = 'text';
   inputEl.id = 'user-initials';
-  inputEl.placeholder = 'Input your initials: '
+  inputEl.placeholder = 'Input your initials: ';
+  inputEl.className = 'form-input';
 
   formEl.appendChild(inputEl);
 
