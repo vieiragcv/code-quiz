@@ -30,6 +30,8 @@ var optionsArr = [q1opts, q2opts, q3opts, q4opts, q5opts];
 var mainContainer = document.querySelector("#main-container");
 var footerContainer = document.querySelector("#footer");
 
+var scoreCard;
+
 /*------------------------------------------------------------------------
 -                                   TIMER
 -------------------------------------------------------------------------*/
@@ -245,14 +247,45 @@ var promptStart = function () {
 -                        HIGH SCORE STORAGE
 -------------------------------------------------------------------------*/
 
-var submitHighScore = function(user) {
-  const input = document.querySelector('#user-initials');
-  user = input.value;
-  console.log(user);
-  localStorage.setItem(`${user}`, JSON.stringify(userScore));
+var loadScores = function () {
+
+  console.log(localStorage.length);
+  for (i = 0; i < localStorage.length; i++) {
+    var scoresObj = [];
+    scoresObj [0] = localStorage.getItem('scores');
+    console.log(scoresObj);
+  }
+  
+  return scoresObj;
 }
 
+var submitHighScore = function() {
+  loadScores();
+
+  var input = document.querySelector(`#user-initials`);
+  var initials = input.value;
+  console.log(initials);
+  
+  data = { userScore, initials };
+
+  localStorage.setItem('scores', JSON.stringify(data));
+}
+
+
+
+
+var generateScores = function () {
+}
+
+/*---------------------------------------------------------------------*/
+
 promptStart();
+
+loadScores();
+
+
+
+
 
 
 
