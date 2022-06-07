@@ -215,7 +215,7 @@ var promptResult = function (value) {
 
   mainContainer.appendChild(formEl);
 
-  console.log(inputEl.value);
+  /* console.log(inputEl.value); */
 
   qButton.addEventListener('click', submitHighScore);
   
@@ -253,41 +253,42 @@ var loadScores = function () {
   if (localStorage.length === 0) {
     return 0;
   }
-/*   console.log(localStorage.length);  */
-  for (i = 0; i < localStorage.length; i++) {
-    scoresObj[i] = localStorage.getItem('scores');
+  else {
+    // count how many records in localStorage and return a count
   }
-  console.log(scoresObj);
-  return scoresObj;
+  
+  localData = localStorage.getItem('scores');
+  localData = JSON.parse(localData);
+  /* console.log(localData); */
+  /*   console.log(scoresObj); */
+  return localData;
 }
 
+
 var submitHighScore = function() {
+
   var input = document.querySelector(`#user-initials`);
   var initials = input.value;
-  console.log(userScore);
-  console.log(initials);
   data = { userScore, initials };
+
+  var currentRecords = loadScores();
+  console.log(currentRecords);
+  var counter = currentRecords.length;
+  console.log(counter);
 
   if (localStorage.length === 0 ) {
     scoresObj[0] = data;
     localStorage.setItem('scores', JSON.stringify(scoresObj));
     return;
   }
-  else {
-  var recordsCount = localStorage.length;
-  /* console.log(rescordsCount); */
-  recordsCount++;
-  console.log(recordsCount);
-  scoresObj[recordsCount] = data;
 
-  localStorage.setItem('scores', JSON.stringify(scoresObj));
-  console.log(scoresObj);
-  return;
+  // WORK ON THIS ELSE
+  else {
+    currentRecords[counter] = data;
+    localStorage.setItem('scores', JSON.stringify(currentRecords));
+    return;
   }
 }
-
-
-
 
 var generateScores = function () {
 }
