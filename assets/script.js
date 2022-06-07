@@ -30,7 +30,7 @@ var optionsArr = [q1opts, q2opts, q3opts, q4opts, q5opts];
 var mainContainer = document.querySelector("#main-container");
 var footerContainer = document.querySelector("#footer");
 
-var scoreCard;
+var scoresObj = [];
 
 /*------------------------------------------------------------------------
 -                                   TIMER
@@ -247,28 +247,43 @@ var promptStart = function () {
 -                        HIGH SCORE STORAGE
 -------------------------------------------------------------------------*/
 
-var loadScores = function () {
+/*   console.log(localStorage.length);  */
 
-  console.log(localStorage.length);
-  for (i = 0; i < localStorage.length; i++) {
-    var scoresObj = [];
-    scoresObj [0] = localStorage.getItem('scores');
-    console.log(scoresObj);
+var loadScores = function () {
+  if (localStorage.length === 0) {
+    return 0;
   }
-  
+/*   console.log(localStorage.length);  */
+  for (i = 0; i < localStorage.length; i++) {
+    scoresObj[i] = localStorage.getItem('scores');
+  }
+  console.log(scoresObj);
   return scoresObj;
 }
 
 var submitHighScore = function() {
-  loadScores();
-
   var input = document.querySelector(`#user-initials`);
   var initials = input.value;
+  console.log(userScore);
   console.log(initials);
-  
   data = { userScore, initials };
 
-  localStorage.setItem('scores', JSON.stringify(data));
+  if (localStorage.length === 0 ) {
+    scoresObj[0] = data;
+    localStorage.setItem('scores', JSON.stringify(scoresObj));
+    return;
+  }
+  else {
+  var recordsCount = localStorage.length;
+  /* console.log(rescordsCount); */
+  recordsCount++;
+  console.log(recordsCount);
+  scoresObj[recordsCount] = data;
+
+  localStorage.setItem('scores', JSON.stringify(scoresObj));
+  console.log(scoresObj);
+  return;
+  }
 }
 
 
