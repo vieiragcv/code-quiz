@@ -61,6 +61,16 @@ body {
   transition: all 0.5s;
 }
 
+.card {
+  margin: 0 0 0 0;
+  border: 1.5px solid black;
+  border-radius: var(--border-radius);
+  padding: 10 10 10 10;
+  background-color: var(--secondary);
+  color: var(--dark);
+
+}
+
 .m-0 {
   margin: 0;
 }

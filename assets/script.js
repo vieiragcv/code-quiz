@@ -180,46 +180,33 @@ var promptQuestion = function (value) {
 }
 
 var promptResult = function (value) {
-
   var qEl = document.createElement("div");
   qEl.className = "row";
   qEl.id = "enter-initials";
   qEl.innerHTML = '<h3>Nicely Done!</h3> <h3>Your Scored:  ' + value + '</h3>';
   mainContainer.appendChild(qEl);
-
   var formEl = document.createElement("form");
   formEl.className = '';
   formEl.id = 'submit-scoreboard';
-
   var labelEl = document.createElement("label");
   labelEl.for = 'user-initials';
   labelEl.textContent = 'Enter Your Initials:   ';
   labelEl.className = 'form-label';
-
   formEl.appendChild(labelEl);
-
   var inputEl = document.createElement("input");
   inputEl.type = 'text';
   inputEl.id = 'user-initials';
   inputEl.placeholder = 'Input your initials: ';
   inputEl.className = 'form-input';
-
   formEl.appendChild(inputEl);
-
   var qButton = document.createElement("button");
   qButton.className = "btn btn-primary btn-sm";
   qButton.type = "submit";
   qButton.textContent = "Submit High Score";
   qButton.id = 'high-score-submit';
-
   formEl.appendChild(qButton);
-
   mainContainer.appendChild(formEl);
-
-  /* console.log(inputEl.value); */
-
   qButton.addEventListener('click', submitHighScore);
-  
  }
 
 var promptStart = function () {
@@ -245,7 +232,7 @@ var promptStart = function () {
 }
 
 /*------------------------------------------------------------------------
--                        HIGH SCORE STORAGE
+-                    HIGH SCORES STORAGE & SUBMITTAL
 -------------------------------------------------------------------------*/
 
 var loadScores = function () {
@@ -253,17 +240,15 @@ var loadScores = function () {
     return 0;
   }
   else {
-    // count how many records in localStorage and return a count
+    localData = localStorage.getItem('scores');
+    localData = JSON.parse(localData);
+    console.log(localData);
+    for (i = 0; i < localData.length; i++) {
+      console.log(localData[i]);
+    }
+    return localData;
   }
-  
-  localData = localStorage.getItem('scores');
-  localData = JSON.parse(localData);
-  /* console.log(localData); */
-  /*   console.log(scoresObj); */
-  return localData;
 }
-
-
 
 var submitHighScore = function() {
 
@@ -288,69 +273,9 @@ var submitHighScore = function() {
   }
 }
 
-// TEMPORARY
-var currentRecords = loadScores();
-console.log(currentRecords); // 1
-var counter = currentRecords.length;
-console.log(counter); // 2
-
-//--------section 2 ------------
-
-var scoresTable = document.querySelector('#high-scores-table');
-console.log(scoresTable);
-
-var mainDiv = document.createElement('div');
-
-var thElement = document.createElement('div');
-thElement.scope = 'row';
-thElement.innerHTML = `1`;
-
-
-var tdElName = document.createElement('div');
-tdElName.innerHTML = `<p> ${currentRecords[0].initials} </p>`;
-mainDiv.appendChild(tdElName);
-
-console.log(currentRecords[0]); // 3
-console.log(tdElName);
-
-var tdElScore = document.createAttribute('div');
-
-tdElScore.innerHTML = currentRecords[0].userScore;
-
-mainDiv.appendChild(thElement);
-
-
-// TEMPORARY
-
-var printScores = function () {
-
-  var scoresTable = document.querySelector('#high-scores-table');
-  var mainDiv = document.createElement('div');
-
-  var thElement = document.createElement('div');
-  thElement.scope = 'row';
-  thElement.innerHTML = `1`;
-
-  var tdElName = document.createElement('div');
-  tdElName.innerHTML = currentRecords[0].initials;
-
-  var tdElScore = document.createAttribute('div');
-  tdElScore.innerHTML = currentRecords[0].userScore;
-
-  mainDiv.appendChild(thElement);
-  mainDiv.appendChild(tdElName);
-  mainDiv.appendChild(tdElScore);
-
-  scoresTable.appendChild(mainDiv);
-
-  console.log(scoresTable);
-}
-
 /*---------------------------------------------------------------------*/
 
-promptStart();
-
-loadScores();
+promptStart(); loadScores();
 
 
 
