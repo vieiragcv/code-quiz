@@ -242,10 +242,6 @@ var loadScores = function () {
   else {
     localData = localStorage.getItem('scores');
     localData = JSON.parse(localData);
-    console.log(localData);
-    for (i = 0; i < localData.length; i++) {
-      console.log(localData[i]);
-    }
     return localData;
   }
 }
@@ -257,9 +253,7 @@ var submitHighScore = function() {
   data = { userScore, initials };
 
   var currentRecords = loadScores();
-  console.log(currentRecords);
   var counter = currentRecords.length;
-  console.log(counter);
 
   if (localStorage.length === 0 ) {
     scoresObj[0] = data;
