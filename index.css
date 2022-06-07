@@ -13,6 +13,21 @@
   --spacing-five: calc(1rem * 3);
 }
 
+table {
+  padding: 10 10 10 10;
+  background-color: var(--secondary);
+  border-color: black;
+  border-width: 3rem;
+  border-radius: 1rem;
+  width: 100%;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.table-content {
+  justify-content: center;
+}
+
 .wrong-answer {
   color: var(--error);
 }

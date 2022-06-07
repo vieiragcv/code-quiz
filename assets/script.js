@@ -33,7 +33,7 @@ var footerContainer = document.querySelector("#footer");
 var scoresObj = [];
 
 /*------------------------------------------------------------------------
--                                   TIMER
+-                           TIMER (index.html - only)
 -------------------------------------------------------------------------*/
 
 var currentTime = 100;
@@ -48,6 +48,7 @@ TimerEl.innerHTML = currentTime;
 if (currentTime > 0) {
   timeLeft.appendChild(TimerEl);
 }
+
 else {
   stopCountDown();
 }
@@ -247,8 +248,6 @@ var promptStart = function () {
 -                        HIGH SCORE STORAGE
 -------------------------------------------------------------------------*/
 
-/*   console.log(localStorage.length);  */
-
 var loadScores = function () {
   if (localStorage.length === 0) {
     return 0;
@@ -263,6 +262,7 @@ var loadScores = function () {
   /*   console.log(scoresObj); */
   return localData;
 }
+
 
 
 var submitHighScore = function() {
@@ -281,8 +281,6 @@ var submitHighScore = function() {
     localStorage.setItem('scores', JSON.stringify(scoresObj));
     return;
   }
-
-  // WORK ON THIS ELSE
   else {
     currentRecords[counter] = data;
     localStorage.setItem('scores', JSON.stringify(currentRecords));
@@ -290,7 +288,62 @@ var submitHighScore = function() {
   }
 }
 
-var generateScores = function () {
+// TEMPORARY
+var currentRecords = loadScores();
+console.log(currentRecords); // 1
+var counter = currentRecords.length;
+console.log(counter); // 2
+
+//--------section 2 ------------
+
+var scoresTable = document.querySelector('#high-scores-table');
+console.log(scoresTable);
+
+var mainDiv = document.createElement('div');
+
+var thElement = document.createElement('div');
+thElement.scope = 'row';
+thElement.innerHTML = `1`;
+
+
+var tdElName = document.createElement('div');
+tdElName.innerHTML = `<p> ${currentRecords[0].initials} </p>`;
+mainDiv.appendChild(tdElName);
+
+console.log(currentRecords[0]); // 3
+console.log(tdElName);
+
+var tdElScore = document.createAttribute('div');
+
+tdElScore.innerHTML = currentRecords[0].userScore;
+
+mainDiv.appendChild(thElement);
+
+
+// TEMPORARY
+
+var printScores = function () {
+
+  var scoresTable = document.querySelector('#high-scores-table');
+  var mainDiv = document.createElement('div');
+
+  var thElement = document.createElement('div');
+  thElement.scope = 'row';
+  thElement.innerHTML = `1`;
+
+  var tdElName = document.createElement('div');
+  tdElName.innerHTML = currentRecords[0].initials;
+
+  var tdElScore = document.createAttribute('div');
+  tdElScore.innerHTML = currentRecords[0].userScore;
+
+  mainDiv.appendChild(thElement);
+  mainDiv.appendChild(tdElName);
+  mainDiv.appendChild(tdElScore);
+
+  scoresTable.appendChild(mainDiv);
+
+  console.log(scoresTable);
 }
 
 /*---------------------------------------------------------------------*/
